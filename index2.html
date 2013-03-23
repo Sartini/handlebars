@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <title>What's Up?</title>
+  </head>
+  <body>
+    <div id="content">
+      This is where the content goes!
+      <ul id="listaNomes"></ul>
+
+
+    </div>
+    <script id="template" type="text/handlebars">
+      Hello, {{name}}!
+    </script>
+
+    <script id="templateLista" type="text/handlebars">
+   
+            {{#list nav}}
+			  <a href="{{url}}">{{title}}</a>
+			{{/list}}
+    
+    </script>
+
+    <script type="text/javascript" src="jquery.js"></script>
+    <script src="handlebars-1.0.0.beta.6.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      (function($) {
+        var compiled = {};
+        $.fn.handlebars = function(template, data) {
+          if (template instanceof jQuery) {
+            template = $(template).html();
+          }
+ 
+          compiled[template] = Handlebars.compile(template);
+          this.html(compiled[template](data));
+
+        };
+      })(jQuery);
+
+
+
+
+      	Handlebars.registerHelper('list', function(context, block) {
+		  var ret = "";  //pode montar colocando ul e fechando com /ul se quiser
+
+		  for(var i=0, j=context.length; i<j; i++) {
+		    ret = ret + "<li>" + block(context[i]) + "</li>";
+		  }
+
+		  return ret + "";
+		});
+
+
+ 
+    //  $('#content').handlebars($('#template'), { name: "Alan" });
+
+      $('#listaNomes').handlebars($('#templateLista'), {
+  			nav: [
+  					{ url: "http://www.yehudakatz.com", title: "Katz Got Your Tongue" },
+    				{ url: "http://www.sproutcore.com/block", title: "SproutCore Blog" },
+  				 ]
+	  });
+
+
+    </script>
+  </body>
+</html>
